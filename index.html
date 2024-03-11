@@ -1,120 +1,156 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>prismillon stats overlay</title>
     <style>
-        @font-face {
-            font-family: testFont;
-            src: url('./image/font.ttf');
-        }
+      @font-face {
+        font-family: testFont;
+        src: url("./media/font.ttf");
+      }
 
-        body {
-            font-family: testFont;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-shadow: 2px 2px 2px black;
-        }
+      .error-message {
+        font-family: Arial, sans-serif; /* or set it to a default font-family */
+        font-size: initial;
+        background-image: none;
+        color: initial;
+        padding: initial;
+        border-radius: initial;
+        text-shadow: initial;
+      }
 
-        #stats {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
-        }
+      body {
+        font-family: testFont;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-shadow: 2px 2px 2px black;
+      }
 
-        #stats img {
-            width: 60px;
-            height: auto;
-            margin-left: 10px;
-            margin-right: 10px;
-            position: relative;
-            top: 7px;
-        }
+      #stats {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+      }
 
-        #stats p {
-            font-size: 70px;
-            background-image: url('./image/overlaybg.png');
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            color: #fff;
-            padding: 20px;
-            padding-right: 60px;
-            padding-left: 30px;
-            border-radius: 15px;
-        }
+      #stats img {
+        width: 60px;
+        height: auto;
+        margin-left: 10px;
+        margin-right: 10px;
+        position: relative;
+        top: 7px;
+      }
 
-        #stats span {
-            font-size: 30px;
-            margin-left: 10px
-        }
+      #stats p {
+        font-size: 70px;
+        background-image: url("./media/background.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        color: #fff;
+        padding: 20px;
+        padding-right: 60px;
+        padding-left: 30px;
+        border-radius: 15px;
+      }
 
-        #stats span.red {
-            color: #ff5858
-        }
+      #stats span {
+        font-size: 30px;
+        margin-left: 10px;
+      }
 
-        #stats span.green {
-            color: #6eff58
-        }
+      #stats span.red {
+        color: #ff5858;
+      }
 
-        #stats span.disabled {
-            color: rgba(0, 0, 0, 0);
-            display: none;
-        }
+      #stats span.green {
+        color: #6eff58;
+      }
+
+      #stats span.disabled {
+        color: rgba(0, 0, 0, 0);
+        display: none;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <div id='stats'></div>
+  <body>
+    <div id="stats"></div>
     <script>
-        localStorage.removeItem('mmr');
-        function animateMmrChange(oldValue, newValue, statsDiv, mmrDelta, colorClass, sign, rankImage) {
-            duration = 3000;
-            if (oldValue == null) {
-                oldValue = newValue - mmrDelta;
-            }
-            let current = parseInt(oldValue)
-            newValue = parseInt(newValue);
-            const interval = setInterval(() => {
-                if (current < newValue) {
-                    current += 1;
-                } else {
-                    current -= 1;
-                }
-                if (current === newValue) {
-                    clearInterval(interval);
-                    statsDiv.innerHTML = ` <p><img src='${rankImage}' alt='Rank Image'>${newValue}<span class="${colorClass}">${sign}${mmrDelta}</span></p>`;
-                } else {
-                    statsDiv.innerHTML = ` <p><img src='${rankImage}' alt='Rank Image'>${current}<span class="${colorClass}">${sign}${mmrDelta}</span></p>`;
-                }
-            }, duration / Math.abs(newValue - current));
+      localStorage.removeItem("mmr");
+      function animateMmrChange(
+        oldValue,
+        newValue,
+        statsDiv,
+        mmrDelta,
+        colorClass,
+        sign,
+        rankImage
+      ) {
+        duration = 3000;
+        if (oldValue == null) {
+          oldValue = newValue - mmrDelta;
         }
+        let current = parseInt(oldValue);
+        newValue = parseInt(newValue);
+        const interval = setInterval(() => {
+          if (current < newValue) {
+            current += 1;
+          } else {
+            current -= 1;
+          }
+          if (current === newValue) {
+            clearInterval(interval);
+            statsDiv.innerHTML = ` <p><img src='${rankImage}' alt='Rank Image'>${newValue}<span class="${colorClass}">${sign}${mmrDelta}</span></p>`;
+          } else {
+            statsDiv.innerHTML = ` <p><img src='${rankImage}' alt='Rank Image'>${current}<span class="${colorClass}">${sign}${mmrDelta}</span></p>`;
+          }
+        }, duration / Math.abs(newValue - current));
+      }
 
-        function updateStats() {
-            const name = new URLSearchParams(window.location.search).get('name');
-            const oldMmr = localStorage.getItem('mmr');
-            fetch('/api/stats?name=' + name).then(response => response.json()).then(data => {
-                const statsDiv = document.getElementById('stats');
-                const mmrDelta = data.mmrDelta;
-                const colorClass = mmrDelta > 0 ? 'green' : mmrDelta < 0 ? 'red' : 'disabled';
-                const sign = mmrDelta > 0 ? '+' : '';
-                console.log(mmrDelta, colorClass, oldMmr, data.mmr);
-                if (oldMmr != data.mmr && data.mmr != 'Invalid Name') {
-                    animateMmrChange(oldMmr, data.mmr, statsDiv, mmrDelta, colorClass, sign, data.rankImage);
-                    localStorage.setItem('mmr', data.mmr);
-                } else if (data.mmr === 'Invalid Name') {
-                    statsDiv.innerHTML = ` <img src='' alt='Rank Image'> <p>Invalid name</p>`;
-                }
+      function updateStats() {
+        const name = new URLSearchParams(window.location.search).get("name");
+        const lounge_mode =
+          new URLSearchParams(window.location.search).get("mode") || "rt";
+        const oldMmr = localStorage.getItem("mmr");
+        console.log(name, lounge_mode, oldMmr);
+        fetch(
+          `https://www.mkwlounge.gg/api/ladderplayerevent.php?ladder_type=${lounge_mode}&player_names=${name}`
+        )
+          .then(async (response) => response.json())
+          .then((res) => {
+            const statsDiv = document.getElementById("stats");
+            const data = res.results;
+            if (data.length === 0) {
+              statsDiv.innerHTML = `<span class="error-message">no stat to display, please check the url and make sure you have ?name=your_name (and &mode=ct if you want to use ct mode) in the url</span>`;
+            } else {
+              const player = data[0];
+              const mmrDelta = player.change_mmr;
+              const colorClass =
+                mmrDelta > 0 ? "green" : mmrDelta < 0 ? "red" : "disabled";
+              const sign = mmrDelta > 0 ? "+" : "";
+              const mmr = player.updated_mmr;
+              console.log(mmrDelta, colorClass, oldMmr, mmr);
+              if (oldMmr != mmr && mmr != "Invalid Name") {
+                animateMmrChange(
+                  oldMmr,
+                  mmr,
+                  statsDiv,
+                  mmrDelta,
+                  colorClass,
+                  sign,
+                  player.updated_emblem
+                );
+                localStorage.setItem("mmr", mmr);
+              }
             }
-            ).catch(error => {
-                console.error('Error:', error);
-            }
-            );
-        }
-        updateStats();
-        setInterval(updateStats, 120000);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+      updateStats();
+      setInterval(updateStats, 120000);
     </script>
-</body>
-
+  </body>
 </html>
