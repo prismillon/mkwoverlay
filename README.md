@@ -1,6 +1,6 @@
 # [mkwoverlay](https://prismillon.github.io/mkwoverlay/)
 
-This is a mmr overlay for the mkw lounge that auto update.
+This is a lr overlay for the mkw lounge that auto update.
 
 - for 150 lounge [github.com/prismillon/statsoverlay](https://github.com/prismillon/statsoverlay)
 - for 200cc lounge [github.com/nanewtech/statsoverlay200](https://github.com/nanewtech/statsoverlay200)
@@ -13,9 +13,9 @@ You should now add your **mkw Lounge** username to the end of the link in the fo
 ```
 prismillon.github.io/mkwoverlay?name=<YOUR_LOUNGE_NAME_HERE>
 ```
-In case you are playing custom tracks you can add `&mode=ct` to the end of the link like this:
+In case you are playing custom tracks you can add `&ct` to the end of the link like this:
 ```
-prismillon.github.io/mkwoverlay?name=<YOUR_LOUNGE_NAME_HERE>&mode=ct
+prismillon.github.io/mkwoverlay?name=<YOUR_LOUNGE_NAME_HERE>&ct
 ```
 
 When you have added your username enter the page and it will look something like this:

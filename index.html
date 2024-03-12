@@ -77,19 +77,23 @@
   <body>
     <div id="stats"></div>
     <script>
-      localStorage.removeItem("mmr");
-      function animateMmrChange(
+      localStorage.removeItem("lr");
+      const statsDiv = document.getElementById("stats");
+      if (new URLSearchParams(window.location.search).get("name") == null) {
+        statsDiv.innerHTML = `<span class="error-message">no stat to display, please check the url and make sure you have ?name=your_name (and &ct if you want to use ct mode) in the url</span>`;
+      }
+      function animatelrChange(
         oldValue,
         newValue,
         statsDiv,
-        mmrDelta,
+        lrDelta,
         colorClass,
         sign,
         rankImage
       ) {
         duration = 3000;
         if (oldValue == null) {
-          oldValue = newValue - mmrDelta;
+          oldValue = newValue - lrDelta;
         }
         let current = parseInt(oldValue);
         newValue = parseInt(newValue);
@@ -101,47 +105,49 @@
           }
           if (current === newValue) {
             clearInterval(interval);
-            statsDiv.innerHTML = ` <p><img src='${rankImage}' alt='Rank Image'>${newValue}<span class="${colorClass}">${sign}${mmrDelta}</span></p>`;
+            statsDiv.innerHTML = ` <p><img src='${rankImage}' alt='Rank Image'>${newValue}<span class="${colorClass}">${sign}${lrDelta}</span></p>`;
           } else {
-            statsDiv.innerHTML = ` <p><img src='${rankImage}' alt='Rank Image'>${current}<span class="${colorClass}">${sign}${mmrDelta}</span></p>`;
+            statsDiv.innerHTML = ` <p><img src='${rankImage}' alt='Rank Image'>${current}<span class="${colorClass}">${sign}${lrDelta}</span></p>`;
           }
         }, duration / Math.abs(newValue - current));
       }
 
       function updateStats() {
         const name = new URLSearchParams(window.location.search).get("name");
-        const lounge_mode =
-          new URLSearchParams(window.location.search).get("mode") || "rt";
-        const oldMmr = localStorage.getItem("mmr");
-        console.log(name, lounge_mode, oldMmr);
+        const lounge_mode = new URLSearchParams(window.location.search).get(
+          "ct"
+        )
+          ? "ct"
+          : "rt";
+        const oldlr = localStorage.getItem("lr");
+        console.log(name, lounge_mode, oldlr);
         fetch(
           `https://www.mkwlounge.gg/api/ladderplayerevent.php?ladder_type=${lounge_mode}&player_names=${name}`
         )
           .then(async (response) => response.json())
           .then((res) => {
-            const statsDiv = document.getElementById("stats");
             const data = res.results;
             if (data.length === 0) {
-              statsDiv.innerHTML = `<span class="error-message">no stat to display, please check the url and make sure you have ?name=your_name (and &mode=ct if you want to use ct mode) in the url</span>`;
+              return;
             } else {
               const player = data[0];
-              const mmrDelta = player.change_mmr;
+              const lrDelta = player.change_lr;
               const colorClass =
-                mmrDelta > 0 ? "green" : mmrDelta < 0 ? "red" : "disabled";
-              const sign = mmrDelta > 0 ? "+" : "";
-              const mmr = player.updated_mmr;
-              console.log(mmrDelta, colorClass, oldMmr, mmr);
-              if (oldMmr != mmr && mmr != "Invalid Name") {
-                animateMmrChange(
-                  oldMmr,
-                  mmr,
+                lrDelta > 0 ? "green" : lrDelta < 0 ? "red" : "disabled";
+              const sign = lrDelta > 0 ? "+" : "";
+              const lr = player.updated_lr;
+              console.log(lrDelta, colorClass, oldlr, lr);
+              if (oldlr != lr && lr != "Invalid Name") {
+                animatelrChange(
+                  oldlr,
+                  lr,
                   statsDiv,
-                  mmrDelta,
+                  lrDelta,
                   colorClass,
                   sign,
                   player.updated_emblem
                 );
-                localStorage.setItem("mmr", mmr);
+                localStorage.setItem("lr", lr);
               }
             }
           })
