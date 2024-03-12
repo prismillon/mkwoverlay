@@ -114,11 +114,10 @@
 
       function updateStats() {
         const name = new URLSearchParams(window.location.search).get("name");
-        const lounge_mode = new URLSearchParams(window.location.search).get(
-          "ct"
-        )
-          ? "ct"
-          : "rt";
+        const lounge_mode =
+          new URLSearchParams(window.location.search).get("ct") != null
+            ? "ct"
+            : "rt";
         const oldlr = localStorage.getItem("lr");
         console.log(name, lounge_mode, oldlr);
         fetch(
