@@ -19,7 +19,6 @@
   width: auto;
   height: auto;
   margin-left: 10px;
-  margin-right: 5px;
   position: relative;
   /* top: 7px; */
 }
@@ -37,7 +36,7 @@
 }
 
 .diff {
-  height: 30%;
+  height: 45px;
 }
 
 .diffbox {
