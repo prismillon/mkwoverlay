@@ -15,25 +15,33 @@
   text-shadow: 2px 2px 2px black;
 }
 
-.image {
-  width: 60px;
+.logo {
+  width: auto;
   height: auto;
   margin-left: 10px;
-  margin-right: 10px;
+  margin-right: 5px;
   position: relative;
-  top: 7px;
+  /* top: 7px; */
 }
 
 .wrapper {
   font-size: 70px;
-  background-image: url("./background.png");
+  /* background-image: url("./background.png");
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: 100% 100%; */
   color: #fff;
   padding: 20px;
   padding-right: 60px;
   padding-left: 30px;
   border-radius: 15px;
+}
+
+.diff {
+  height: 30%;
+}
+
+.diffbox {
+  margin-left: 10px;
 }
 
 .modifier {

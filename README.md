@@ -2,8 +2,8 @@
 
 This is a lr overlay for the mkw lounge that auto update.
 
-- for 150 lounge [github.com/prismillon/statsoverlay](https://github.com/prismillon/statsoverlay)
-- for 200cc lounge [github.com/nanewtech/statsoverlay200](https://github.com/nanewtech/statsoverlay200)
+- for mk8dx 150 lounge [github.com/prismillon/statsoverlay](https://github.com/prismillon/statsoverlay)
+- for mk8dx 200cc lounge [github.com/nanewtech/statsoverlay200](https://github.com/nanewtech/statsoverlay200)
 
 # Usage
 #### When opening the Link to the Website [prismillon.github.io/mkwoverlay](https://prismillon.github.io/mkwoverlay) you will see a page that prompt you to add `?name=<your_name_here>` in the url
@@ -16,6 +16,16 @@ prismillon.github.io/mkwoverlay?name=<YOUR_LOUNGE_NAME_HERE>
 In case you are playing custom tracks you can add `&ct` to the end of the link like this:
 ```
 prismillon.github.io/mkwoverlay?name=<YOUR_LOUNGE_NAME_HERE>&ct
+```
+
+In case you want to display mmr you can add `&mmr` to the end of the link like this:
+```
+prismillon.github.io/mkwoverlay?name=<YOUR_LOUNGE_NAME_HERE>&mmr
+```
+
+they can be combined like this:
+```
+prismillon.github.io/mkwoverlay?name=<YOUR_LOUNGE_NAME_HERE>&ct&mmr
 ```
 
 When you have added your username enter the page and it will look something like this:
