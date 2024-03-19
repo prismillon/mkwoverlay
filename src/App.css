@@ -23,11 +23,32 @@
   /* top: 7px; */
 }
 
+.mk8dx_logo {
+  width: 60px;
+  height: auto;
+  margin-left: 10px;
+  margin-right: 10px;
+  position: relative;
+  top: 7px;
+}
+
 .wrapper {
   font-size: 70px;
   /* background-image: url("./background.png");
   background-repeat: no-repeat;
   background-size: 100% 100%; */
+  color: #fff;
+  padding: 20px;
+  padding-right: 60px;
+  padding-left: 30px;
+  border-radius: 15px;
+}
+
+.mk8dx_wrapper {
+  font-size: 70px;
+  background-image: url("./background.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   color: #fff;
   padding: 20px;
   padding-right: 60px;
