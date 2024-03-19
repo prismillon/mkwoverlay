@@ -11,7 +11,6 @@ import g6 from "./char/g6.png";
 import g7 from "./char/g7.png";
 import g8 from "./char/g8.png";
 import g9 from "./char/g9.png";
-import gminus from "./char/gminus.png";
 import gplus from "./char/gplus.png";
 
 import r0 from "./char/r0.png";
@@ -25,7 +24,6 @@ import r7 from "./char/r7.png";
 import r8 from "./char/r8.png";
 import r9 from "./char/r9.png";
 import rminus from "./char/rminus.png";
-import rplus from "./char/rplus.png";
 
 import y0 from "./char/y0.png";
 import y1 from "./char/y1.png";
@@ -37,6 +35,7 @@ import y6 from "./char/y6.png";
 import y7 from "./char/y7.png";
 import y8 from "./char/y8.png";
 import y9 from "./char/y9.png";
+import { animated, useSpring } from "@react-spring/web";
 
 const CharMap = {
   r0: r0,
@@ -50,7 +49,6 @@ const CharMap = {
   r8: r8,
   r9: r9,
   "r-": rminus,
-  "r+": rplus,
   g0: g0,
   g1: g1,
   g2: g2,
@@ -61,7 +59,6 @@ const CharMap = {
   g7: g7,
   g8: g8,
   g9: g9,
-  "g-": gminus,
   "g+": gplus,
   y0: y0,
   y1: y1,
@@ -86,6 +83,7 @@ export default function App() {
   const [rankURL, setRankURL] = React.useState("");
   const [diff, setDiff] = React.useState("");
   const [modClass, setModClass] = React.useState("");
+  const props = useSpring({ mmr });
 
   useEffect(() => {
     const fetchData = () =>
@@ -135,7 +133,7 @@ export default function App() {
     fetchData();
     const id = setInterval(fetchData, 120000);
     return () => clearInterval(id);
-  }, [ladderType, name]);
+  }, [ladderType, name, mmrType]);
 
   if (name === null) {
     return (
@@ -148,15 +146,36 @@ export default function App() {
     );
   }
 
+  if (displayType === "mkw") {
+    return (
+      <div className="stats">
+        <p className="wrapper">
+          <img src={rankURL} className="logo" alt="" />
+          <LrConverter mmr={mmr} />
+          <Modifier modClass={modClass} modifier={diff} />
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="stats">
-      <p className="wrapper">
-        <img src={rankURL} className="logo" alt="" />
-        <LrConverter mmr={mmr} />
-        <Modifier modClass={modClass} modifier={diff} />
+      <p className="mk8dx_wrapper">
+        <img src={rankURL} className="mk8dx_logo" alt="" />
+        <animated.a>{props.mmr.to((x) => x.toFixed(0))}</animated.a>
+        <Mk8dx_Mod modClass={modClass} modifier={diff} />
       </p>
     </div>
   );
+}
+
+function Mk8dx_Mod({
+  modClass,
+  modifier,
+}: {
+  modClass: string;
+  modifier: string;
+}) {
+  return <span className={modClass}>{modifier}</span>;
 }
 
 function Modifier({
