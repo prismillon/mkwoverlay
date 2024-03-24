@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/mkwoverlay/static/css/main.b7e0626d.css",
-    "main.js": "/mkwoverlay/static/js/main.0660b9c0.js",
+    "main.js": "/mkwoverlay/static/js/main.2ea75951.js",
     "static/media/font.ttf": "/mkwoverlay/static/media/font.f9d90b4cfe3463d2d543.ttf",
     "static/media/background.png": "/mkwoverlay/static/media/background.6b8a8ccae68ad0c9365a.png",
     "index.html": "/mkwoverlay/index.html",
     "main.b7e0626d.css.map": "/mkwoverlay/static/css/main.b7e0626d.css.map",
-    "main.0660b9c0.js.map": "/mkwoverlay/static/js/main.0660b9c0.js.map"
+    "main.2ea75951.js.map": "/mkwoverlay/static/js/main.2ea75951.js.map"
   },
   "entrypoints": [
     "static/css/main.b7e0626d.css",
-    "static/js/main.0660b9c0.js"
+    "static/js/main.2ea75951.js"
   ]
 }
