@@ -35,6 +35,7 @@ import y6 from "./char/y6.png";
 import y7 from "./char/y7.png";
 import y8 from "./char/y8.png";
 import y9 from "./char/y9.png";
+import yminus from "./char/yminus.png";
 import { animated, useSpring } from "@react-spring/web";
 
 const CharMap = {
@@ -70,6 +71,7 @@ const CharMap = {
   y7: y7,
   y8: y8,
   y9: y9,
+  "y-": yminus,
 };
 
 export default function App() {
