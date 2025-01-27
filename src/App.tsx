@@ -37,6 +37,7 @@ import y8 from "./char/y8.png";
 import y9 from "./char/y9.png";
 import yminus from "./char/yminus.png";
 import { animated, useSpring } from "@react-spring/web";
+import crown from "./crown.png";
 
 const CharMap = {
   r0: r0,
@@ -74,6 +75,67 @@ const CharMap = {
   "y-": yminus,
 };
 
+type PlayerResult = {
+  player_id: number;
+  player_name: string;
+  player_country_flag: string;
+  game_controller: string;
+  discord_user_id: string;
+  player_names: string;
+  name_count: number;
+  ladder_id: number;
+  base_mmr: number;
+  base_lr: number;
+  strikes: number;
+  game_counter: number;
+  reset_game_counter: number;
+  is_placement: number;
+  current_mmr: number;
+  current_lr: number;
+  peak_mmr: number;
+  peak_lr: number;
+  lowest_mmr: number;
+  lowest_lr: number;
+  wins: number;
+  loss: number;
+  max_gain_mmr: number;
+  max_gain_lr: number;
+  max_loss_mmr: number;
+  max_loss_lr: number;
+  win_percentage: number;
+  gainloss10_mmr: number;
+  gainloss10_lr: number;
+  wins10: number;
+  loss10: number;
+  win10_percentage: number;
+  win_streak: number;
+  top_score: number;
+  average_score: number;
+  average10_score: number;
+  std_score: number;
+  std10_score: number;
+  total_events: number;
+  penalties: number;
+  max_strikes: number;
+  ranking: string;
+  percentile: number;
+  previous_ranking: string;
+  previous_percentile: number;
+  last_event_date: string;
+  total_events_since_date: number;
+  since_date: string;
+  update_date: string;
+  current_division: string;
+  current_class: string;
+  url: string;
+  current_emblem: string;
+};
+
+type ApiResponse = {
+  status: "success" | "error";
+  results: PlayerResult[];
+};
+
 export default function App() {
   const searchParams = new URLSearchParams(window.location.search);
   const ladderType = searchParams.get("ct") === null ? "rt" : "ct";
@@ -81,7 +143,7 @@ export default function App() {
   const displayType = searchParams.get("mk8dx") === null ? "mkw" : "mk8dx";
   const name = searchParams.get("name");
 
-  const [mmr, setMmr] = React.useState(0);
+  const [mmr, setMmr] = React.useState<number | null>(null);
   const [rankURL, setRankURL] = React.useState("");
   const [diff, setDiff] = React.useState("");
   const [modClass, setModClass] = React.useState("");
@@ -90,42 +152,37 @@ export default function App() {
   useEffect(() => {
     const fetchData = () =>
       fetch(
-        `https://www.mkwlounge.gg/api/ladderplayerevent.php?ladder_type=${ladderType}&player_names=${name}`
+        `https://www.mkwlounge.gg/api/ladderplayer.php?ladder_type=${ladderType}&player_names=${name}`
       )
         .then((response) => response.json())
-        .then((res) => res.results)
-        .then((data) => {
-          if (data.length === 0) {
+        .then((res: ApiResponse) => res.results)
+        .then((players) => {
+          if (players.length === 0) {
             return;
           }
-          data = data[0];
+          const data = players[0];
           console.log(data);
-          if (mmrType === "lr") {
-            setMmr(data.updated_lr);
-            setRankURL(data.updated_emblem);
-            if (data.change_lr > 0) {
-              setModClass("modifier green");
-              setDiff("+" + data.change_lr);
-            } else if (data.change_lr < 0) {
-              setModClass("modifier red");
-              setDiff(data.change_lr);
-            } else {
-              setModClass("modifier disabled");
-              setDiff(data.change_lr);
-            }
-          } else if (mmrType === "mmr") {
-            setMmr(data.updated_mmr);
-            setRankURL(data.updated_emblem);
-            if (data.change_mmr > 0) {
-              setModClass("modifier green");
-              setDiff("+" + data.change_mmr);
-            } else if (data.change_mmr < 0) {
-              setModClass("modifier red");
-              setDiff(data.change_mmr);
-            } else {
-              setModClass("modifier disabled");
-              setDiff(data.change_mmr);
-            }
+          const change =
+            mmr !== null
+              ? mmrType === "lr"
+                ? data.current_lr - mmr
+                : data.current_mmr - mmr
+              : 0;
+          mmrType === "lr" ? setMmr(data.current_lr) : setMmr(data.current_mmr);
+          if (change > 0) {
+            setModClass("modifier green");
+            setDiff("+" + change);
+          } else if (change < 0) {
+            setModClass("modifier red");
+            setDiff(change.toString());
+          } else {
+            setModClass("modifier disabled");
+            setDiff(change.toString());
+          }
+          if (data.ranking !== "1") {
+            setRankURL(data.current_emblem);
+          } else {
+            setRankURL(crown);
           }
         })
         .catch((error) => {
@@ -153,7 +210,7 @@ export default function App() {
       <div className="stats">
         <p className="wrapper">
           <img src={rankURL} className="logo" alt="" />
-          <LrConverter mmr={mmr} />
+          <LrConverter mmr={mmr ?? 0} />
           <Modifier modClass={modClass} modifier={diff} />
         </p>
       </div>
@@ -163,7 +220,7 @@ export default function App() {
     <div className="stats">
       <p className="mk8dx_wrapper">
         <img src={rankURL} className="mk8dx_logo" alt="" />
-        <animated.a>{props.mmr.to((x) => x.toFixed(0))}</animated.a>
+        <animated.a>{props.mmr.to((x) => (x ?? 0).toFixed(0))}</animated.a>
         <Mk8dx_Mod modClass={modClass} modifier={diff} />
       </p>
     </div>
