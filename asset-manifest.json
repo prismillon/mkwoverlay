@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/mkwoverlay/static/css/main.ed10fafa.css",
-    "main.js": "/mkwoverlay/static/js/main.12519d1b.js",
-    "static/media/crown.png": "/mkwoverlay/static/media/crown.77024532474d37a3d694.png",
+    "main.css": "/mkwoverlay/static/css/main.b7e0626d.css",
+    "main.js": "/mkwoverlay/static/js/main.25c0f27b.js",
     "static/media/font.ttf": "/mkwoverlay/static/media/font.f9d90b4cfe3463d2d543.ttf",
     "static/media/background.png": "/mkwoverlay/static/media/background.6b8a8ccae68ad0c9365a.png",
+    "static/media/crownie_from_lr.png": "/mkwoverlay/static/media/crownie_from_lr.ab2427174ccc70ee6846.png",
     "index.html": "/mkwoverlay/index.html",
-    "main.ed10fafa.css.map": "/mkwoverlay/static/css/main.ed10fafa.css.map",
-    "main.12519d1b.js.map": "/mkwoverlay/static/js/main.12519d1b.js.map"
+    "main.b7e0626d.css.map": "/mkwoverlay/static/css/main.b7e0626d.css.map",
+    "main.25c0f27b.js.map": "/mkwoverlay/static/js/main.25c0f27b.js.map"
   },
   "entrypoints": [
-    "static/css/main.ed10fafa.css",
-    "static/js/main.12519d1b.js"
+    "static/css/main.b7e0626d.css",
+    "static/js/main.25c0f27b.js"
   ]
 }
