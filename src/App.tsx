@@ -37,7 +37,7 @@ import y8 from "./char/y8.png";
 import y9 from "./char/y9.png";
 import yminus from "./char/yminus.png";
 import { animated, useSpring } from "@react-spring/web";
-import crown from "./crown.png";
+import crown from "./crownie_from_lr.png";
 
 const CharMap = {
   r0: r0,
@@ -144,10 +144,15 @@ export default function App() {
   const name = searchParams.get("name");
 
   const [mmr, setMmr] = React.useState<number | null>(null);
+  const mmrRef = React.useRef<number | null>(null);
   const [rankURL, setRankURL] = React.useState("");
   const [diff, setDiff] = React.useState("");
   const [modClass, setModClass] = React.useState("");
   const props = useSpring({ mmr });
+
+  useEffect(() => {
+    mmrRef.current = mmr;
+  }, [mmr]);
 
   useEffect(() => {
     const fetchData = () =>
@@ -161,13 +166,35 @@ export default function App() {
             return;
           }
           const data = players[0];
-          console.log(data);
+          console.log("data: ", data);
+          if (mmrType === "lr") {
+            if (data.current_lr === mmrRef.current) {
+              console.log(
+                `no change new: ${data.current_lr} / current: ${mmrRef.current}`
+              );
+              return;
+            }
+          } else if (mmrType === "mmr") {
+            if (data.current_mmr === mmrRef.current) {
+              console.log(
+                `no change new: ${data.current_mmr} / current: ${mmrRef.current}`
+              );
+              return;
+            }
+          }
+          console.log(
+            `change detected, new: ${
+              mmrType === "lr" ? data.current_lr : data.current_mmr
+            }/ current: ${mmrRef.current}`
+          );
+
           const change =
-            mmr !== null
+            mmrRef.current !== null
               ? mmrType === "lr"
-                ? data.current_lr - mmr
-                : data.current_mmr - mmr
+                ? data.current_lr - mmrRef.current
+                : data.current_mmr - mmrRef.current
               : 0;
+          console.log(`change: ${change}`);
           mmrType === "lr" ? setMmr(data.current_lr) : setMmr(data.current_mmr);
           if (change > 0) {
             setModClass("modifier green");
