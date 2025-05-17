@@ -148,7 +148,7 @@ export default function App() {
   const [rankURL, setRankURL] = React.useState("");
   const [diff, setDiff] = React.useState("");
   const [modClass, setModClass] = React.useState("");
-  const props = useSpring({ mmr });
+  const props = useSpring({ val: mmr || 0 });
 
   useEffect(() => {
     mmrRef.current = mmr;
@@ -247,7 +247,7 @@ export default function App() {
     <div className="stats">
       <p className="mk8dx_wrapper">
         <img src={rankURL} className="mk8dx_logo" alt="" />
-        <animated.a>{props.mmr.to((x) => (x ?? 0).toFixed(0))}</animated.a>
+        <animated.a>{props.val.to((x) => (x || 0).toFixed(0))}</animated.a>
         <Mk8dx_Mod modClass={modClass} modifier={diff} />
       </p>
     </div>
