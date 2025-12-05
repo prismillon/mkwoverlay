@@ -36,7 +36,7 @@ import y7 from "./char/y7.png";
 import y8 from "./char/y8.png";
 import y9 from "./char/y9.png";
 import yminus from "./char/yminus.png";
-import { animated, useSpring } from "@react-spring/web";
+import { useSpring, animated } from "@react-spring/web";
 import crown from "./crownie_from_lr.png";
 
 const CharMap = {
@@ -247,14 +247,16 @@ export default function App() {
     <div className="stats">
       <p className="mk8dx_wrapper">
         <img src={rankURL} className="mk8dx_logo" alt="" />
-        <animated.a>{props.val.to((x) => (x || 0).toFixed(0))}</animated.a>
-        <Mk8dx_Mod modClass={modClass} modifier={diff} />
+        <animated.span>
+          {props.val.to((x: number) => (x || 0).toFixed(0))}
+        </animated.span>
+        <Mk8dxMod modClass={modClass} modifier={diff} />
       </p>
     </div>
   );
 }
 
-function Mk8dx_Mod({
+function Mk8dxMod({
   modClass,
   modifier,
 }: {
