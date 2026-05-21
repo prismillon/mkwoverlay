@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@react-spring/web": "10.0.3",
+    "@react-spring/web": "10.0.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
