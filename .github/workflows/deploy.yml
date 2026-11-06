@@ -24,7 +24,7 @@ jobs:
 
       # The runner pool ships Node 18; vite/rolldown needs node:util styleText (20.12+).
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version: 22
 
